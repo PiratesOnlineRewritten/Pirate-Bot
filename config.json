@@ -1,0 +1,7 @@
+{
+    "logging": {
+        "level": "info",
+        "log_path": "logs/",
+        "file_logging": false
+    }
+}
