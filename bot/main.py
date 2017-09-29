@@ -1,8 +1,7 @@
 import discord
 from discord.ext import commands
 from bot.music import Music
-from bot.general import BasicCommands, DeveloperCommands
-from bot.rpc import RPCCommands
+from bot import commands as botCommands
 from bot.config import ConfigFile
 import xmlrpc.client
 import logging
@@ -92,9 +91,8 @@ class PirateBot(object):
             logging.getLogger().addHandler(stream)
 
     def __setupBot(self):
-        bot.remove_command("help")
-        bot.add_cog(BasicCommands(bot, self))
-        bot.add_cog(DeveloperCommands(bot, self))
+        bot.add_cog(botCommands.General(bot, self))
+        bot.add_cog(botCommands.Developer(bot, self))
 
         if self.config.getValue('commands.music', False):
             self.logger.debug('Enabling Music commands...')
@@ -102,7 +100,7 @@ class PirateBot(object):
 
         if self.config.getValue('commands.rpc', False):
             self.logger.debug('Enabling RPC commands...')
-            bot.add_cog(RPCCommands(bot, self))
+            bot.add_cog(botCommands.Servers(bot, self))
 
     def start(self):
         bot.run('MzU0NDQ0NjA5NDM2MjU0MjA5.DK26Mg.rc4Of9R-pA_26ckWPa14991a5dI')
