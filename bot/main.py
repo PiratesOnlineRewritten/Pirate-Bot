@@ -5,6 +5,8 @@ from bot import commands as botCommands
 from bot.config import ConfigFile
 import xmlrpc.client
 import logging
+import asyncio
+import random
 import time
 import os
 
@@ -102,16 +104,33 @@ class PirateBot(object):
             self.logger.debug('Enabling RPC commands...')
             bot.add_cog(botCommands.Servers(bot, self))
 
+    async def __managePlayingStatus(self):
+        await bot.wait_until_ready()
+        messages = self.config.getValue('bot.playMessages', None)
+
+        if not messages:
+            return
+
+        if len(messages) == 0:
+            return
+
+        if isinstance(messages, str):
+            await bot.change_presence(game=discord.Game(name=messages))
+            return
+
+        while not bot.is_closed:
+            message = random.choice(messages)
+            await bot.change_presence(game=discord.Game(name=message))
+            await asyncio.sleep(60)
+
     def start(self):
-        bot.run('MzU0NDQ0NjA5NDM2MjU0MjA5.DK26Mg.rc4Of9R-pA_26ckWPa14991a5dI')
+        bot.loop.create_task(self.__managePlayingStatus())
+        bot.run(self.config.getValue('bot.token', ''))
 
     @bot.event
     async def on_ready():
         logger = logging.getLogger('PirateBot')
-        logger.info('------------------------------------')
-        logger.info('Username: %s' % bot.user.name)
-        logger.info('UserId: %s' % bot.user.id)
-        logger.info('------------------------------------')
+        logger.info('Logged in as Username: %s with userId: %s' % (bot.user.name, bot.user.id))
 
 if __name__ == '__main__':
     PirateBot = PirateBot('./config.json')
