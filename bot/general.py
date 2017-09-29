@@ -36,7 +36,18 @@ class DeveloperCommands(CogBase):
         for role in ctx.message.server.roles:
             message += '%s: %s\n' % (role.name, role.id)
 
-        await self.bot.say(message)        
+        await self.bot.say(message)
+
+    @commands.command(pass_context=True)
+    async def myRoles(self, ctx):
+        """Returns the command users roles"""
+        if not self.isDiscordDeveloper(ctx):
+            return
+        message = ''
+        for role in ctx.message.author.roles:
+            message += '%s: %s\n' % (role.name, role.id)
+
+        await self.bot.say(message)               
 
     @commands.command(pass_context=True)
     async def myId(self, ctx):

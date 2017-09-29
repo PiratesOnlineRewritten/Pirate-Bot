@@ -1,18 +1,20 @@
 import discord
 from discord.ext import commands
+from bot.cogs import CogBase
 import random
 import json
 
-class RPCCommands(object):
+class RPCCommands(CogBase):
     """RPC cluster commands"""
 
     def __init__(self, bot, main):
-        self.bot = bot
-        self.main = main
+        super().__init__(bot, main)
 
-    @commands.command()
-    async def status(self):
+    @commands.command(pass_context=True)
+    async def status(self, ctx):
         """Pings the RPC on the UberDOG to confirm its online"""
+        if not self.isStaff(ctx):
+            return
         say = 'The servers are currently down.'
         try:
             response = json.loads(self.main.cluster.ping('PONG'))
