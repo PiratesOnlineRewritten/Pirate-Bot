@@ -48,7 +48,7 @@ class PirateBot(object):
         # Generate a log file path is a timestamp suffix
         ltime = time.localtime()
         suffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000, ltime[1], ltime[2], ltime[3], ltime[4], ltime[5])
-        log_file = 'serverlog-%s.log' % suffix
+        log_file = 'log-%s.log' % suffix
         log_path = '%s%s%s' % (log_path, os.sep, log_file)
 
         log_levels = {
@@ -106,7 +106,7 @@ class PirateBot(object):
 
     async def __managePlayingStatus(self):
         await bot.wait_until_ready()
-        messages = self.config.getValue('bot.playMessages', None)
+        messages = self.config.getValue('bot.play_messages', None)
 
         if not messages:
             return
@@ -121,7 +121,7 @@ class PirateBot(object):
         while not bot.is_closed:
             message = random.choice(messages)
             await bot.change_presence(game=discord.Game(name=message))
-            await asyncio.sleep(60)
+            await asyncio.sleep(60 * random.randint(1, 4))
 
     def start(self):
         bot.loop.create_task(self.__managePlayingStatus())
