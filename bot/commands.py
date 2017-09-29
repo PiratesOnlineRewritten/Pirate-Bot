@@ -54,6 +54,25 @@ class Servers(CogBase):
         finally:
             await self.bot.say(say)
 
+    @commands.command(pass_context=True, no_pm=True, hidden=True)
+    async def serverMessage(self, ctx, *messages):
+        """Tells the game servers to display a message across the Caribbean"""
+        if not self.isAdmin(ctx):
+            return
+        message = ''
+        for m in messages:
+            if isinstance(m, str):
+                message +='%s ' % m
+        say = 'Succesfully sent message: %s' % message
+        try:
+            response = json.loads(self.main.cluster.systemMessage(message))
+            if response['code'] != 200 or response['message'] != 'Success':
+                say = 'Failed to send message'
+        except:
+            pass
+        finally:
+            await self.bot.say(say)
+
 class Developer(CogBase):
     """Developer commands"""
 
@@ -69,7 +88,7 @@ class Developer(CogBase):
         for role in ctx.message.server.roles:
             message += '%s: %s\n' % (role.name, role.id)
 
-        await self.bot.say(message)
+        await self.bot.whisper('The %s server roles are:\n %s' % (ctx.message.server.name, message))
 
     @commands.command(pass_context=True, hidden=True)
     async def myRoles(self, ctx):
@@ -80,11 +99,11 @@ class Developer(CogBase):
         for role in ctx.message.author.roles:
             message += '%s: %s\n' % (role.name, role.id)
 
-        await self.bot.say(message)               
+        await self.bot.whisper('Your %s roles are:\n%s' % (ctx.message.server.name, message))
 
     @commands.command(pass_context=True, hidden=True)
     async def myId(self, ctx):
         """Returns the requesters Discord id"""
         if not self.isDiscordDeveloper(ctx):
             return
-        await self.bot.say(ctx.message.author.id)
+        await self.bot.whisper('Your Discord Id is: %s' % ctx.message.author.id)

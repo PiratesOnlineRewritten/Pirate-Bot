@@ -10,6 +10,8 @@ class CogBase(object):
 
     def isAdmin(self, ctx):
         admin = False
+        if not hasattr(ctx.message.author, 'roles'):
+            return False
         for role in ctx.message.author.roles:
             if role.permissions.administrator:
                 admin = True
