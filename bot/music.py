@@ -1,6 +1,7 @@
 import asyncio
 import discord
 from discord.ext import commands
+from bot.cogs import CogBase
 
 if not discord.opus.is_loaded():
     # the 'opus' library here is opus.dll on windows
@@ -60,12 +61,11 @@ class VoiceState(object):
             self.current.player.start()
             await self.play_next_song.wait()
 
-class Music(object):
+class Music(CogBase):
     """Voice related commands"""
     
     def __init__(self, bot, main):
-        self.bot = bot
-        self.main = main
+        super().__init__(bot, main)
         self.voice_states = {}
 
     def get_voice_state(self, server):

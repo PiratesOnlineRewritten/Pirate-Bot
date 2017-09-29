@@ -1,13 +1,13 @@
 import discord
 from discord.ext import commands
+from bot.cogs import CogBase
 import random
 
-class BasicCommands(object):
+class BasicCommands(CogBase):
     """General commands"""
 
     def __init__(self, bot, main):
-        self.bot = bot
-        self.main = main
+        super().__init__(bot, main)
 
     @commands.command()
     async def roll(self, dice):
@@ -19,3 +19,28 @@ class BasicCommands(object):
 
         result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
         await self.bot.say(result)        
+
+
+class DeveloperCommands(CogBase):
+    """Developer commands"""
+
+    def __init__(self, bot, main):
+        super().__init__(bot, main)
+
+    @commands.command(pass_context=True)
+    async def roles(self, ctx):
+        """Returns the Discord server roles"""
+        if not self.isDiscordDeveloper(ctx):
+            return
+        message = ''
+        for role in ctx.message.server.roles:
+            message += '%s: %s\n' % (role.name, role.id)
+
+        await self.bot.say(message)        
+
+    @commands.command(pass_context=True)
+    async def myId(self, ctx):
+        """Returns the requesters Discord id"""
+        if not self.isDiscordDeveloper(ctx):
+            return
+        await self.bot.say(ctx.message.author.id)

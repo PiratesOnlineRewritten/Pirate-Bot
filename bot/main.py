@@ -1,8 +1,10 @@
 import discord
 from discord.ext import commands
 from bot.music import Music
-from bot.general import BasicCommands
+from bot.general import BasicCommands, DeveloperCommands
+from bot.rpc import RPCCommands
 from bot.config import ConfigFile
+import xmlrpc.client
 import logging
 import time
 import os
@@ -14,6 +16,7 @@ class PirateBot(object):
 
     def __init__(self, configPath):
         self.config = None
+        self.cluster = None
 
         if not os.path.exists(configPath):
             self.logger.warning('Failed to start Pirate Bot; Config: %s does not exist' % configPath)
@@ -27,6 +30,12 @@ class PirateBot(object):
             return
 
         self.__setupLogging()
+
+        if self.config.getValue('cluster.rpc_enabled', False):
+            rpcUrl = self.config.getValue('cluster.rpc_url', '')
+            self.logger.info('Connecting to %s...' % rpcUrl)
+            self.cluster = xmlrpc.client.ServerProxy(rpcUrl)
+
         self.__setupBot()
 
     def __setupLogging(self):
@@ -85,14 +94,17 @@ class PirateBot(object):
     def __setupBot(self):
         bot.remove_command("help")
         bot.add_cog(BasicCommands(bot, self))
+        bot.add_cog(DeveloperCommands(bot, self))
 
         if self.config.getValue('commands.music', False):
+            self.logger.debug('Enabling Music commands...')
             bot.add_cog(Music(bot, self))
 
+        if self.config.getValue('commands.rpc', False):
+            self.logger.debug('Enabling RPC commands...')
+            bot.add_cog(RPCCommands(bot, self))
+
     def start(self):
-        self.logger.info('====================================')
-        self.logger.info('Starting Pirate Bot...')
-        self.logger.info('====================================')
         bot.run('MzU0NDQ0NjA5NDM2MjU0MjA5.DK26Mg.rc4Of9R-pA_26ckWPa14991a5dI')
 
     @bot.event
@@ -102,7 +114,6 @@ class PirateBot(object):
         logger.info('Username: %s' % bot.user.name)
         logger.info('UserId: %s' % bot.user.id)
         logger.info('------------------------------------')
-        logger.info('Ready!')
 
 if __name__ == '__main__':
     PirateBot = PirateBot('./config.json')

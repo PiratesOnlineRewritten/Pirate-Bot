@@ -3,5 +3,21 @@
         "level": "info",
         "log_path": "logs/",
         "file_logging": false
+    },
+    "cluster": {
+        "rpc_enabled": true,
+        "rpc_url": "http://localhost:6484/PRPC2"
+    },
+    "commands": {
+        "music": false,
+        "rpc": true
+    },
+    "roles": {
+        "staff": 353278957988216832,
+        "gameMaster": 353278807890984961,
+        "leadGameMaster": 354055874236514305,
+        "developer": 353279047104724994,
+        "leadDeveloper": 354056023469719552,
+        "discordDeveloper": 361907179579506689
     }
 }
