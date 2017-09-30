@@ -19,8 +19,7 @@ class CogBase(object):
         return admin
 
     def hasRole(self, ctx, roleId, allowAdmin=True):
-        discordRole = discord.utils.get(ctx.message.server.roles, id=roleId)
-        return (discordRole in ctx.message.author.roles) or (self.isAdmin(ctx) and allowAdmin)
+        return (str(roleId) in [str(y.id) for y in ctx.message.author.roles]) or (self.isAdmin(ctx) and allowAdmin)
 
     def isDiscordDeveloper(self, ctx):
         discordDevId = self.main.config.getValue('roles.discordDeveloper', 0)
