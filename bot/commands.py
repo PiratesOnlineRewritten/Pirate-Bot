@@ -169,11 +169,8 @@ class Moderation(CogBase):
             await self.bot.say('%s is not a valid number!' % amount)
             return 
 
-        deleted = 0
-        async for message in client.logs_from(channel, limit=500):
-            if i > len(messages):
-                break
-            message = messages[i]
+        messages = []
+        async for message in self.bot.logs_from(ctx.message.channel, limit=amount):
 
             if not message:
                 continue
@@ -181,10 +178,10 @@ class Moderation(CogBase):
             if member and message.author != member:
                 continue
 
-            yield from self.bot.delete_message(msg)
-            deleted += 1
+            messages.append(message)
 
-        msg = await self.bot.say('Deleted %s messages' % deleted)
+        await self.bot.delete_messages(messages)
+        msg = await self.bot.say('Deleted %s messages' % len(messages))
 
         if msg:
             await asyncio.sleep(5)
