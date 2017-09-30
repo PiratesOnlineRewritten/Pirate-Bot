@@ -29,5 +29,10 @@
         "developer": 353279047104724994,
         "leadDeveloper": 354056023469719552,
         "discordDeveloper": 361907179579506689
+    },
+    "twitch": {
+        "client_id": "2zmfrsvyisph5kpqfq2yuz3ss23ilx",
+        "channel_name": "PiratesOnlineRewritten",
+        "announcement_channel": "353278575954231298"
     }
 }

@@ -3,6 +3,7 @@ from discord.ext import commands
 from bot.music import Music
 from bot import commands as botCommands
 from bot.config import ConfigFile
+from bot.stream import TwitchMonitor
 import xmlrpc.client
 import logging
 import asyncio
@@ -93,6 +94,8 @@ class PirateBot(object):
             logging.getLogger().addHandler(stream)
 
     def __setupBot(self):
+        self.twitchMonitor = TwitchMonitor(bot, self)
+
         bot.add_cog(botCommands.General(bot, self))
         bot.add_cog(botCommands.Developer(bot, self))
 
