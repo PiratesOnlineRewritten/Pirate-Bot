@@ -19,7 +19,7 @@ class TwitchMonitor(CogBase):
 
         self.logger.info('Starting Twitch monitor...')
 
-        while True:
+        while not self.bot.is_closed:
             self.logger.debug('Checking stream status...')
 
             url = 'https://api.twitch.tv/kraken/streams'

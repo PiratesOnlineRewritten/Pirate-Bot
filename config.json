@@ -34,5 +34,10 @@
         "client_id": "2zmfrsvyisph5kpqfq2yuz3ss23ilx",
         "channel_name": "PiratesOnlineRewritten",
         "announcement_channel": "353278575954231298"
+    },
+    "moderation": {
+        "kick_messages": [],
+        "ban_messages": [],
+        "unban_messages": []
     }
 }
