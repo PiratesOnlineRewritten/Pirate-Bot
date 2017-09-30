@@ -33,6 +33,25 @@ class General(CogBase):
         msgs = ['{0.name} has an evil curse!', '{0.name} does not have an evil curse.']
         await self.bot.say(random.choice(msgs).format(member))
 
+    @commands.command()
+    async def kraken(self):
+        """Kraken!"""
+        await self.bot.say('Let no joyful voice be heard! Let no man look up to the sky with hope! And let this day be cursed by we who ready to wake... the Kraken!')
+
+    @commands.command(pass_context=True, no_pm=True, hidden=True)
+    async def website(self, ctx):
+        """Shows the website information"""
+        if not self.isStaff(ctx):
+            return
+        await self.bot.say("Wan't to find out more information? Be sure to checkout our website for more news, updates, events, and more! http://www.piratesrewritten.com/")
+
+    @commands.command(pass_context=True, no_pm=True, hidden=True)
+    async def twitch(self, ctx):
+        """Shows the Twitch channel information"""
+        if not self.isStaff(ctx):
+            return
+        await self.bot.say("Wan't to know when we go live? Be sure to follow our officall Twitch channel! https://go.twitch.tv/piratesonlinerewritten")
+
 class Servers(CogBase):
     """RPC cluster commands"""
 

@@ -95,6 +95,7 @@ class PirateBot(object):
 
     def __setupBot(self):
         self.twitchMonitor = TwitchMonitor(bot, self)
+        bot.pm_help = True
 
         bot.add_cog(botCommands.General(bot, self))
         bot.add_cog(botCommands.Moderation(bot, self))
