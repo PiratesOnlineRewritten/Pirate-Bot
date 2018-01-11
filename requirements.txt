@@ -1,0 +1,4 @@
+colorlog==3.0.1
+discord.py==0.16.11
+requests==2.18.1
+discord==0.0.2
