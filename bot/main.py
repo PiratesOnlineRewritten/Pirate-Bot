@@ -126,7 +126,7 @@ class PirateBot(object):
         while not bot.is_closed:
             message = random.choice(messages)
             await bot.change_presence(game=discord.Game(name=message))
-            await asyncio.sleep(60 * random.randint(1, 4))
+            await asyncio.sleep(60 * random.randint(3, 8))
 
     def start(self):
         bot.loop.create_task(self.__managePlayingStatus())
