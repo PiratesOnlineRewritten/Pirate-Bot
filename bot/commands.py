@@ -108,6 +108,21 @@ class Servers(CogBase):
         finally:
             await self.bot.say(say)   
 
+    @commands.command(pass_context=True, no_pm=True, hidden=True)
+    async def districts(self, ctx):
+        """Asks the game servers for the current district status list"""
+        if not self.isDeveloper(ctx):
+            return
+        say = 'Failed to retrieve districts'
+        try:
+            response = json.loads(self.main.cluster.getDistricts())
+            if response['code'] == 200 or response['message'] == 'Success':
+                say = 'Districts: %s' % response['districts']
+        except:
+            raise
+        finally:
+            await self.bot.say(say)      
+
 class Moderation(CogBase):
     """Moderator commands"""
 
